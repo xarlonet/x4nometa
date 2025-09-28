@@ -1,0 +1,1194 @@
+<!doctype html>
+<html lang="ru" id="top">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="color-scheme" content="light dark">
+  <meta name="theme-color" content="#0b66ff" id="meta-theme-color" />
+  <title>X4 Project — Ясный стиль</title>
+
+  <!-- Preconnects -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
+
+  <!-- Fonts & Icons -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+
+  <!-- Auto theme from system (no manual toggle) -->
+  <script>
+    (() => {
+      try {
+        const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+        const mode = prefersDark ? 'dark' : 'light';
+        const root = document.documentElement;
+        root.setAttribute('data-theme', mode);
+        const meta = document.getElementById('meta-theme-color');
+        if (meta) meta.setAttribute('content', mode === 'dark' ? '#0b1220' : '#ffffff');
+      } catch (_) {}
+    })();
+  </script>
+
+  <style>
+    :root{
+      /* Brand */
+      --brand-50:#eaf2ff; --brand-100:#d5e4ff; --brand-200:#aac7ff; --brand-300:#7ea9ff;
+      --brand-400:#538cff; --brand-500:#2a72ff; --brand-600:#0b66ff; --brand-700:#0b54d1;
+      --brand-800:#0e429f; --brand-900:#0f357a;
+
+      /* Dark base */
+      --bg:#0b1220; --surface:#0f172a; --text:#f5f7fb; --soft:#d9e1ee; --muted:#9aa5b1;
+      --line:rgba(148,163,184,0.18); --panel:rgba(17,24,39,0.58);
+      --good:#10b981; --bad:#ef4444;
+
+      --glow1:rgba(11,102,255,0.26); --glow2:rgba(139,92,246,0.20); --glow3:rgba(45,212,191,0.16);
+
+      --radius-xl:22px; --radius-lg:18px; --radius-md:14px; --radius-sm:10px;
+      --shadow-xs:0 4px 14px rgba(2,6,23,.18);
+      --shadow-sm:0 8px 24px rgba(2,6,23,.18);
+      --shadow-md:0 16px 40px rgba(2,6,23,.24);
+      --shadow-lg:0 24px 64px rgba(2,6,23,.32);
+
+      --font:"Inter", system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Arial, "Apple Color Emoji","Segoe UI Emoji";
+
+      --ease: cubic-bezier(.2,.7,.3,1);
+      --ease-long: cubic-bezier(.16,1,.3,1);
+      --dur: 600ms;
+
+      --header-h: 72px;
+
+      --container-max: 1360px;
+      --ultra-enabled: 1;
+
+      /* Fluid type baseline */
+      --fs-base-min: 14px;
+      --fs-base-max: 18px;
+    }
+
+    [data-theme="light"]{
+      --bg:#f6f8ff;
+      --surface:#ffffff;
+      --text:#0a1634;
+      --soft:#1a2a52;
+      --muted:#2f3d60;
+      --line:rgba(12,18,34,0.16);
+      --panel:rgba(255,255,255,0.98);
+      --glow1:rgba(11,102,255,0.08);
+      --glow2:rgba(139,92,246,0.06);
+      --glow3:rgba(45,212,191,0.06);
+      --good:#0f9b6b;
+      --bad:#d93535;
+    }
+
+    html, body{height:100%}
+    html{ scroll-behavior:smooth }
+    @media (prefers-reduced-motion: reduce){ html{ scroll-behavior:auto } }
+    body{
+      margin:0; font-family:var(--font); color:var(--text); background:var(--bg);
+      -webkit-font-smoothing:antialiased; text-rendering:optimizeLegibility; overflow-x:hidden; line-height:1.5;
+      -webkit-tap-highlight-color: transparent;
+      /* Fluid global font size */
+      font-size: clamp(var(--fs-base-min), calc(14px + 0.35vw), var(--fs-base-max));
+      /* Respect notches */
+      padding-left: env(safe-area-inset-left, 0);
+      padding-right: env(safe-area-inset-right, 0);
+    }
+    [data-theme="light"] body{ -webkit-font-smoothing:antialiased }
+
+    /* Fluid typography */
+    nav a{ font-size: clamp(13px, 1.25vw, 15px) }
+    .settings-btn{ font-size: clamp(12px, 1.15vw, 13px) }
+    .live-clock{ font-size: clamp(12px, 1.1vw, 13px) }
+    .section-title{ font-size: clamp(18px, 1.8vw, 20px) }
+    .section-note{ font-size: clamp(13px, 1.3vw, 14px) }
+    .example-title{ font-size: clamp(15px, 1.6vw, 16px) }
+    .pane-head{ font-size: clamp(13px, 1.3vw, 14px) }
+    .text{ font-size: clamp(14px, 1.6vw, 16px) }
+    .note, .settings-sub{ font-size: clamp(12px, 1.2vw, 13px) }
+    .chipx{ font-size: clamp(11px, 1.2vw, 12px) }
+    .pane-head .chip{ font-size: clamp(11px, 1.2vw, 12px) }
+    .card p{ font-size: clamp(13px, 1.3vw, 14px) }
+    .brand-name{ font-size: clamp(18px, 2vw, 22px) }
+    h1{
+      margin:0; font-size: clamp(30px, 6.4vw, 72px); line-height:1.06; letter-spacing:-0.9px; font-weight:900;
+      background:linear-gradient(180deg, var(--text), color-mix(in oklab, var(--text) 78%, transparent));
+      -webkit-background-clip:text; background-clip:text; color:transparent;
+      text-wrap:balance; transform:translateZ(0);
+      transition: transform var(--dur) var(--ease-long);
+    }
+    .sub{ margin:0 auto; max-width:64ch; font-size: clamp(14px, 2.2vw, 18px); color:var(--muted) }
+
+    [data-theme="light"] .sub,
+    [data-theme="light"] .note,
+    [data-theme="light"] p{ color:var(--muted) }
+    [data-theme="light"] h1{
+      background: linear-gradient(180deg, #0b1b3a, #0b1b3a);
+      -webkit-background-clip:text; background-clip:text; color:transparent;
+      text-shadow:none;
+    }
+
+    /* Backdrop */
+    .backdrop{
+      position:fixed; inset:0; z-index:-2;
+      background:
+        radial-gradient(900px 520px at 20% -8%, var(--glow1), transparent 60%),
+        radial-gradient(900px 520px at 80% -10%, var(--glow2), transparent 60%),
+        radial-gradient(1000px 560px at 50% 110%, var(--glow3), transparent 65%),
+        linear-gradient(180deg, var(--bg), color-mix(in oklab, var(--bg) 92%, black 8%));
+      animation: aura 28s var(--ease-long) infinite alternate;
+      filter:saturate(115%); will-change: transform;
+    }
+    @keyframes aura{
+      0%{transform:translateY(0) scale(1)}
+      50%{transform:translateY(-14px) scale(1.01)}
+      100%{transform:translateY(0) scale(1)}
+    }
+
+    /* Header / Navigation */
+    header{
+      position:sticky; top:0; z-index:30;
+      backdrop-filter:saturate(160%) blur(10px);
+      background: color-mix(in oklab, var(--panel) 96%, transparent);
+      border-bottom:1px solid var(--line);
+      transition: background .35s var(--ease), border-color .35s var(--ease), box-shadow .25s var(--ease);
+      box-shadow: 0 6px 22px rgba(2,6,23,.12);
+    }
+    [data-theme="light"] header{
+      background:#ffffff;
+      border-bottom-color: color-mix(in oklab, #0b1b3a 16%, rgba(0,0,0,0));
+      box-shadow: 0 8px 22px rgba(11, 30, 70, .08);
+    }
+
+    .progress{ display:none !important }
+
+    .nav{
+      max-width:min(var(--container-max), 96vw); margin:0 auto; padding:10px 16px;
+      display:grid; grid-template-columns:auto 1fr auto; align-items:center; gap:16px;
+    }
+
+    .brand{ display:inline-flex; align-items:center; gap:12px; cursor:pointer; user-select:none; min-height:44px }
+    .brand:active{ transform: translateY(1px) }
+    .logo{
+      height:42px; width:42px; border-radius:12px; display:grid; place-items:center; flex:0 0 42px;
+      background: conic-gradient(from 180deg at 50% 50%, var(--brand-600), var(--brand-400), var(--brand-700));
+      color:#fff;
+      box-shadow: 0 10px 24px rgba(11,102,255,0.35), inset 0 0 18px rgba(255,255,255,0.18);
+    }
+    .logo i{ font-size:18px }
+    .brand-name{
+      font-weight:900; letter-spacing:.3px;
+      text-shadow: 0 10px 26px rgba(11,102,255,0.12);
+    }
+    [data-theme="light"] .brand-name{
+      background: linear-gradient(180deg, #0b1b3a, #0b1b3a);
+      -webkit-background-clip:text; background-clip:text; color:transparent;
+      text-shadow:none;
+    }
+
+    .live-clock{
+      font-weight:900; letter-spacing:.2px;
+      color:var(--soft);
+      background: color-mix(in oklab, var(--panel) 90%, transparent);
+      border:1px solid var(--line); padding:8px 12px; border-radius:10px;
+      box-shadow: var(--shadow-xs);
+      min-width:62px; text-align:center;
+    }
+    [data-theme="light"] .live-clock{ color:#0b1b3a }
+
+    nav ul{
+      display:flex; gap:10px; list-style:none; padding:0; margin:0; justify-content:center; flex-wrap:wrap;
+    }
+    nav a{
+      --bg: color-mix(in oklab, var(--panel) 88%, transparent);
+      --bd: var(--line);
+      --fg: var(--text);
+      display:inline-flex; gap:10px; align-items:center; text-decoration:none;
+      color:var(--fg); font-weight:800; letter-spacing:.2px;
+      padding:10px 12px; border-radius:12px; border:1px solid var(--bd);
+      background: var(--bg);
+      transition: transform .2s var(--ease), box-shadow .3s var(--ease), background .3s var(--ease), border-color .3s var(--ease), color .3s var(--ease);
+      box-shadow: var(--shadow-xs);
+      will-change: transform;
+      min-height:44px; /* touch target */
+    }
+    nav a i{ color:var(--brand-500) }
+    @media (hover:hover){
+      nav a:hover{ transform:translateY(-1px); box-shadow:var(--shadow-sm) }
+    }
+    nav a:active{ transform:translateY(0) scale(.99) }
+
+    [data-theme="light"] nav a{
+      --bg: #ffffff;
+      --bd: color-mix(in oklab, var(--brand-700) 14%, var(--line));
+      --fg: #0b1b3a;
+      color:var(--fg);
+    }
+    [data-theme="light"] nav a:hover{
+      background: color-mix(in oklab, #ffffff 92%, var(--brand-50) 8%);
+      border-color: color-mix(in oklab, var(--brand-700) 22%, var(--line));
+    }
+
+    nav a.is-active{
+      background: linear-gradient(135deg, color-mix(in oklab, var(--brand-600) 22%, var(--bg)), color-mix(in oklab, var(--brand-400) 18%, var(--bg)));
+      border-color: color-mix(in oklab, var(--brand-600) 40%, var(--line));
+      color:#fff;
+      box-shadow: 0 12px 28px rgba(11,102,255,0.28), inset 0 0 0 999px color-mix(in oklab, var(--brand-600) 6%, transparent);
+    }
+    nav a.is-active i{ color:#fff }
+
+    .actions{ display:flex; gap:12px; align-items:center; justify-content:flex-end }
+
+    .settings-btn{
+      height:40px; min-width:40px; padding:0 12px;
+      display:inline-flex; align-items:center; gap:8px;
+      border-radius:12px; border:1px solid var(--line);
+      background: color-mix(in oklab, var(--panel) 90%, transparent);
+      color:var(--text); font-weight:800; cursor:pointer;
+      box-shadow: var(--shadow-xs);
+      transition: transform .18s var(--ease), box-shadow .25s var(--ease), background .25s var(--ease);
+    }
+    @media (hover:hover){
+      .settings-btn:hover{ transform:translateY(-1px); box-shadow:var(--shadow-sm) }
+    }
+    .settings-btn i{ color:var(--brand-500) }
+
+    .settings-panel{
+      position:absolute; right:16px; top:calc(var(--header-h) + 10px);
+      width:min(420px, 92vw);
+      background: color-mix(in oklab, var(--surface) 96%, transparent);
+      border:1px solid var(--line); border-radius:16px;
+      box-shadow: var(--shadow-lg);
+      padding:14px; display:none; z-index:35;
+    }
+    .settings-panel[aria-hidden="false"]{ display:block }
+    .settings-title{
+      font-weight:900; font-size:clamp(13px,1.2vw,14px); color:var(--soft); margin:6px 0 10px;
+      display:flex; align-items:center; gap:8px;
+    }
+
+    .settings-row{
+      display:flex; align-items:center; justify-content:space-between;
+      gap:14px; padding:10px 10px; border:1px solid var(--line);
+      border-radius:12px; background: color-mix(in oklab, var(--surface) 98%, transparent);
+      margin-bottom:10px;
+    }
+    .settings-col{ display:grid; gap:6px }
+    .switch-label{ font-weight:900; font-size:clamp(13px,1.3vw,14px) }
+    .settings-sub{ opacity:.9 }
+
+    /* Switch */
+    .switch{
+      --on-bg: linear-gradient(135deg, color-mix(in oklab, var(--brand-600) 24%, var(--bg)), color-mix(in oklab, var(--brand-400) 18%, var(--bg)));
+      --off-bg: color-mix(in oklab, var(--panel) 92%, transparent);
+      position:relative; width:72px; height:38px; border-radius:999px; border:1px solid var(--line);
+      background: var(--off-bg);
+      display:inline-grid; align-items:center; justify-content:stretch; padding:0 6px; cursor:pointer;
+      transition: background .25s var(--ease), box-shadow .25s var(--ease), border-color .25s var(--ease), transform .12s var(--ease);
+      box-shadow: var(--shadow-xs);
+    }
+    .switch:active{ transform: scale(.98) }
+    .switch .icons{
+      position:absolute; inset:0; display:flex; align-items:center; justify-content:space-between; padding:0 10px; opacity:.9;
+    }
+    .switch .icons i{
+      font-size:14px; color:var(--muted); transition: color .25s var(--ease), opacity .25s var(--ease);
+    }
+    .switch .thumb{
+      --s: 28px;
+      position:absolute; height:var(--s); width:var(--s); border-radius:999px;
+      background:#fff; display:grid; place-items:center;
+      left:4px; transition: left .28s var(--ease), background .25s var(--ease), color .25s var(--ease), box-shadow .25s var(--ease);
+      box-shadow: 0 6px 18px rgba(2,6,23,.22);
+      color: var(--brand-500);
+    }
+    .switch[aria-checked="true"]{
+      background: var(--on-bg);
+      border-color: color-mix(in oklab, var(--brand-600) 42%, var(--line));
+      box-shadow: 0 10px 24px rgba(11,102,255,0.28), inset 0 0 0 999px color-mix(in oklab, var(--brand-600) 6%, transparent);
+    }
+    .switch[aria-checked="true"] .thumb{ left: calc(100% - 4px - 28px); color: var(--brand-700) }
+    .switch[aria-checked="true"] .icons i:first-child{ color:#fff }
+    .switch[aria-checked="true"] .icons i:last-child{ color: color-mix(in oklab, #ffffff 70%, #000 30%) }
+
+    .container{ max-width:min(var(--container-max), 96vw); margin:0 auto; padding:28px 16px 72px; }
+    section[id]{ scroll-margin-top: calc(var(--header-h) + 10px) }
+
+    .hero{ margin-top:26px; display:grid; place-items:center; text-align:center; gap:16px; perspective:800px }
+    .hero[data-parallax="1"] h1{ transform: translateY(-4px) rotateX(6deg) }
+
+    .quick-chips{
+      margin-top:12px; display:flex; flex-wrap:wrap; gap:10px; justify-content:center
+    }
+    .chipx{
+      display:inline-flex; align-items:center; gap:8px; padding:10px 14px; border-radius:999px;
+      background: color-mix(in oklab, var(--panel) 90%, transparent);
+      border:1px solid var(--line); font-weight:800; color:var(--soft);
+      box-shadow: var(--shadow-xs);
+    }
+    .chipx i{ color:var(--brand-500) }
+
+    .section-head{
+      margin-top:40px; margin-bottom:12px; display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:10px;
+      position:relative;
+    }
+    .section-head::after{
+      content:""; position:absolute; left:0; right:0; bottom:-8px; height:1px;
+      background: linear-gradient(90deg, transparent, var(--line), transparent);
+    }
+
+    .examples{ margin-top:32px; display:grid; gap:18px }
+    .example-card{
+      border:1px solid var(--line); border-radius:var(--radius-xl);
+      background: color-mix(in oklab, var(--surface) 92%, transparent);
+      box-shadow:var(--shadow-md);
+      padding:18px;
+      transform-style:preserve-3d; transform: perspective(1000px) translateY(8px) rotateX(8deg) scale(.975);
+      opacity:0;
+      transition: box-shadow .3s var(--ease), background .2s var(--ease), border-color .2s var(--ease), transform .08s var(--ease), opacity .4s var(--ease);
+      will-change: transform, opacity, clip-path;
+    }
+    @media (hover:hover){
+      .example-card:hover{ box-shadow:var(--shadow-lg) }
+    }
+
+    [data-theme="light"] .example-card:active,
+    [data-theme="light"] .card:active,
+    [data-theme="light"] .pane:active,
+    [data-theme="light"] .row:active{
+      background: color-mix(in oklab, #ffffff 94%, var(--brand-50) 6%);
+      border-color: color-mix(in oklab, var(--brand-600) 22%, var(--line));
+      box-shadow: var(--shadow-sm);
+      transform: translateY(1px) scale(.995);
+      color:#0b1b3a;
+    }
+    [data-theme="light"] .example-card:active .note,
+    [data-theme="light"] .card:active p,
+    [data-theme="light"] .pane:active .note,
+    [data-theme="light"] .row:active .note{
+      color:#2f3d60;
+    }
+
+    .example-head{
+      display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:12px; flex-wrap:wrap;
+    }
+    .split{ display:grid; grid-template-columns:1fr 1fr; gap:14px }
+    .pane{
+      border-radius:16px; padding:14px; display:grid; gap:10px;
+      background: color-mix(in oklab, var(--surface) 96%, transparent);
+      border:2px solid var(--line);
+      transition: transform .25s var(--ease), border-color .25s var(--ease), background .25s var(--ease);
+    }
+    @media (hover:hover){
+      .pane:hover{ transform: translateY(-2px) }
+    }
+    .pane.good{ border-color: color-mix(in oklab, var(--good) 34%, transparent) }
+    .pane.bad{
+      border-style:dashed;
+      border-color: color-mix(in oklab, var(--bad) 34%, transparent);
+      background: repeating-linear-gradient(45deg, color-mix(in oklab, var(--surface) 98%, transparent) 0 10px, color-mix(in oklab, var(--surface) 92%, transparent) 10px 20px);
+    }
+    .pane-head{ display:flex; align-items:center; gap:10px; font-weight:800; letter-spacing:.2px; flex-wrap:wrap }
+    .pane-head .chip{
+      display:inline-flex; align-items:center; gap:8px; padding:6px 10px; border-radius:999px;
+      border:1px solid var(--line);
+    }
+    .pane.good .chip{ color:var(--good); border-color: color-mix(in oklab, var(--good) 38%, transparent) }
+    .pane.bad .chip{ color:var(--bad); border-color: color-mix(in oklab, var(--bad) 38%, transparent) }
+
+    .row{
+      display:flex; gap:12px; align-items:flex-start; flex-wrap:nowrap;
+      background: color-mix(in oklab, var(--surface) 98%, transparent);
+      border:1px solid var(--line); border-radius:12px;
+      padding:12px;
+    }
+    .mark{
+      height:30px; width:30px; border-radius:8px; display:grid; place-items:center;
+      background: color-mix(in oklab, var(--panel) 88%, transparent);
+      flex:0 0 30px;
+    }
+    .pane.good .mark{ border:2px solid color-mix(in oklab, var(--good) 35%, transparent); color:var(--good) }
+    .pane.bad .mark{ border:2px solid color-mix(in oklab, var(--bad) 35%, transparent); color:var(--bad) }
+
+    .text{ font-weight:700; line-height:1.35 }
+    .note{ color:var(--muted) }
+
+    .principles{ margin-top:14px; display:grid; gap:16px; grid-template-columns: repeat(3, 1fr) }
+    .card{
+      border:1px solid var(--line); border-radius: var(--radius-lg);
+      background: color-mix(in oklab, var(--surface) 94%, transparent);
+      box-shadow:var(--shadow-md);
+      padding:18px; display:grid; gap:10px;
+      transform-style:preserve-3d; transform: perspective(1000px) translateY(10px) rotateX(10deg) scale(.98);
+      opacity:0; will-change: transform, opacity, clip-path;
+      transition: box-shadow .3s var(--ease), background .2s var(--ease), border-color .2s var(--ease), transform .08s var(--ease), opacity .4s var(--ease);
+    }
+    @media (hover:hover){
+      .card:hover{ box-shadow:var(--shadow-lg) }
+    }
+    .card .title{ display:flex; align-items:center; gap:10px; font-weight:900; flex-wrap:wrap }
+    .card .title i{ color:var(--brand-500) }
+    .card p{ margin:0; color:var(--muted) }
+
+    footer{
+      margin-top:48px; padding:18px 16px calc(24px + env(safe-area-inset-bottom, 0));
+      border-top:1px solid var(--line);
+      background: color-mix(in oklab, var(--surface) 86%, transparent);
+    }
+    .footer-dock{
+      max-width:min(var(--container-max), 96vw); margin:0 auto; display:flex; justify-content:center; align-items:center; gap:12px; flex-wrap:wrap;
+    }
+    .footer-dock a{
+      height:48px; width:48px; border-radius:999px; display:grid; place-items:center;
+      background: color-mix(in oklab, var(--panel) 92%, transparent);
+      border:1px solid var(--line);
+      color:#fff; text-decoration:none;
+      box-shadow: 0 14px 24px rgba(11,102,255,0.24);
+      transition: transform .18s var(--ease), box-shadow .25s var(--ease), background .25s var(--ease);
+    }
+    @media (hover:hover){
+      .footer-dock a:hover{ transform:translateY(-1px); box-shadow:0 18px 36px rgba(11,102,255,0.34) }
+    }
+    .footer-dock i{ font-size:20px; color:var(--brand-500) }
+    .footer-dock .label{ font-weight:900; font-size:clamp(13px, 1.3vw, 14px); color:var(--soft) }
+
+    /* Precipitation canvases — fixed, full viewport */
+    .precip-canvas{
+      position:fixed; inset:0; z-index:0; pointer-events:none; display:none;
+    }
+    .precip-canvas.active{ display:block }
+
+    /* Fold animation: reveal once and keep visible */
+    .fold-anim{
+      --p: var(--reveal, 0);
+      transform-origin: top center;
+      transform:
+        perspective(1000px)
+        translateY(calc((1 - var(--p)) * 10px))
+        rotateX(calc((1 - var(--p)) * 8deg))
+        scale(calc(.98 + var(--p) * .02));
+      opacity: calc(.2 + var(--p) * .8);
+      clip-path: inset(0 0 calc((1 - var(--p)) * 12%) 0 round var(--radius-lg));
+      transition:
+        transform var(--dur) var(--ease-long),
+        opacity var(--dur) var(--ease-long),
+        clip-path var(--dur) var(--ease-long),
+        box-shadow .3s var(--ease);
+      will-change: transform, opacity, clip-path;
+    }
+
+    /* Ultra-wide & HiDPI scaling */
+    @media (min-width:1600px){
+      :root{ --radius-xl:24px; --radius-lg:20px; --fs-base-max: 19px }
+      .container, .nav, .footer-dock{ max-width: min(var(--container-max), 92vw) }
+      .examples{ gap:20px }
+    }
+    @media (min-width:1920px){
+      :root{ --container-max: calc( (var(--ultra-enabled) * 1680px) + ((1 - var(--ultra-enabled)) * var(--container-max)) ) }
+      h1{ font-size:clamp(36px, 5.2vw, 84px) }
+    }
+    @media (min-width:2560px){
+      :root{ --container-max: calc( (var(--ultra-enabled) * 1800px) + ((1 - var(--ultra-enabled)) * var(--container-max)) ) }
+      body{ font-size: clamp(16px, 0.9vw, 20px) }
+    }
+
+    /* Tablet and below adjustments */
+    @media (max-width:1200px){
+      .nav, .container, .footer-dock{ max-width:min(var(--container-max), 94vw) }
+    }
+    @media (max-width:1060px){
+      .split{ grid-template-columns:1fr }
+      .principles{ grid-template-columns: 1fr 1fr }
+    }
+    @media (max-width:820px){
+      .nav{ grid-template-columns: 1fr auto; grid-auto-rows:auto; row-gap:10px }
+      nav{ grid-column:1 / -1 }
+      .actions{ justify-content:flex-start }
+    }
+    @media (max-width:640px){
+      .principles{ grid-template-columns: 1fr }
+      .container{ padding:20px 12px 56px }
+      .footer-dock .label{ display:none }
+      .logo{ height:38px; width:38px; flex-basis:38px }
+      h1{ letter-spacing:-0.6px }
+      .chipx{ padding:9px 12px }
+    }
+
+    /* Short landscape (phones) */
+    @media (max-height:480px) and (orientation:landscape){
+      .hero{ gap:10px; margin-top:16px }
+      h1{ font-size: clamp(24px, 6vw, 38px) }
+      .sub{ font-size: clamp(13px, 2vw, 15px) }
+      .nav{ padding:8px 12px }
+      .settings-panel{ top:calc(var(--header-h) + 6px) }
+    }
+
+    /* Respect user preferences */
+    @media (prefers-reduced-motion: reduce){
+      *{ animation-duration:0.01ms !important; animation-iteration-count:1 !important; transition:none !important }
+      .backdrop{ animation:none }
+      .hero[data-parallax="1"] h1{ transform:none }
+    }
+
+    @media (prefers-contrast: more){
+      :root{ --line: rgba(148,163,184,0.3) }
+      nav a, .settings-btn, .row, .pane, .card, .example-card{ border-width:2px }
+    }
+
+    /* Hoverless devices: tone down interactive motion */
+    @media (hover:none){
+      nav a, .settings-btn{ transition:none }
+      .pane, .card{ transition: background .2s, border-color .2s, box-shadow .2s }
+    }
+  </style>
+</head>
+<body>
+  <div class="backdrop" aria-hidden="true"></div>
+
+  <header role="banner">
+    <div class="nav">
+      <div class="brand" id="brandHeader" aria-label="X4 NoMeta — к началу">
+        <div class="logo" aria-hidden="true"><i class="fa-solid fa-cubes"></i></div>
+        <div class="brand-name">X4 NoMeta</div>
+      </div>
+
+      <nav aria-label="Навигация" role="navigation">
+        <ul>
+          <li><a href="#write" data-nav="write"><i class="fa-solid fa-pen" aria-hidden="true"></i> <span>Как писать</span></a></li>
+          <li><a href="#examples" data-nav="examples"><i class="fa-solid fa-shuffle" aria-hidden="true"></i> <span>Примеры</span></a></li>
+          <li><a href="#principles" data-nav="principles"><i class="fa-solid fa-sliders" aria-hidden="true"></i> <span>Принципы</span></a></li>
+        </ul>
+      </nav>
+
+      <div class="actions">
+        <div class="live-clock" id="liveClock" aria-live="polite" title="Текущее время"></div>
+        <button class="settings-btn" id="settingsBtn" type="button" aria-haspopup="true" aria-expanded="false" aria-controls="settingsPanel">
+          <i class="fa-solid fa-gear" aria-hidden="true"></i>
+          <span>Настройки</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Настройки: только погодные эффекты, лишние тумблеры удалены -->
+  <div class="settings-panel" id="settingsPanel" role="dialog" aria-modal="false" aria-hidden="true" aria-labelledby="settingsTitle">
+    <div class="settings-title" id="settingsTitle">
+      <i class="fa-solid fa-sliders"></i> Эффекты фона
+    </div>
+
+    <div class="settings-row">
+      <div class="settings-col">
+        <div class="switch-label" id="rainLabel">Дождь</div>
+        <div class="settings-sub">Анимированный дождь на фоне</div>
+      </div>
+      <!-- FIX: использована корректная иконка "droplet-slash" из набора solid -->
+      <button class="switch" id="rainSwitch" type="button" role="switch" aria-checked="false" aria-labelledby="rainLabel">
+        <div class="icons" aria-hidden="true">
+          <i class="fa-solid fa-droplet"></i>
+          <i class="fa-solid fa-droplet-slash"></i>
+        </div>
+        <div class="thumb" aria-hidden="true"><i class="fa-solid fa-droplet"></i></div>
+      </button>
+    </div>
+
+    <div class="settings-row">
+      <div class="settings-col">
+        <div class="switch-label" id="snowLabel">Снег</div>
+        <div class="settings-sub">Анимированный снег на фоне</div>
+      </div>
+      <button class="switch" id="snowSwitch" type="button" role="switch" aria-checked="false" aria-labelledby="snowLabel">
+        <div class="icons" aria-hidden="true">
+          <i class="fa-regular fa-snowflake"></i>
+          <i class="fa-solid fa-snowflake"></i>
+        </div>
+        <div class="thumb" aria-hidden="true"><i class="fa-regular fa-snowflake"></i></div>
+      </button>
+    </div>
+  </div>
+
+  <canvas class="precip-canvas" id="rainCanvas" aria-hidden="true"></canvas>
+  <canvas class="precip-canvas" id="snowCanvas" aria-hidden="true"></canvas>
+
+  <main class="container" role="main">
+    <section class="hero" id="write" aria-labelledby="heroTitle">
+      <h1 id="heroTitle">Ничего лишнего: говори просто, конкретно и по делу.</h1>
+      <p class="sub">Формат: пиши так — не так. Коротко и по фактам: время, числа, следующий шаг. Итог понятен: что делаем, кто делает и к какому сроку.</p>
+
+      <div class="quick-chips" aria-hidden="false">
+        <div class="chipx"><i class="fa-solid fa-stopwatch"></i> Быстро к сути</div>
+        <div class="chipx"><i class="fa-solid fa-signal"></i> Видно важное</div>
+        <div class="chipx"><i class="fa-solid fa-route"></i> Есть следующий шаг</div>
+      </div>
+    </section>
+
+    <section id="examples" aria-labelledby="examplesTitle">
+      <div class="section-head">
+        <div class="section-title" id="examplesTitle">
+          <i class="fa-solid fa-shuffle" aria-hidden="true"></i>
+          Пиши так — не так
+        </div>
+        <div class="section-note">Слева — как надо, справа — как не надо. Конкретика, контраст и следующий шаг.</div>
+      </div>
+
+      <div class="examples">
+        <article class="example-card fold-anim" aria-label="Встреча и повестка">
+          <div class="example-head">
+            <div class="example-title"><i class="fa-solid fa-handshake" aria-hidden="true"></i> Встреча и повестка</div>
+          </div>
+          <div class="split">
+            <div class="pane good">
+              <div class="pane-head">
+                <span class="chip"><i class="fa-solid fa-check" aria-hidden="true"></i> Пиши так</span>
+              </div>
+              <div class="row">
+                <div class="mark"><i class="fa-solid fa-bolt"></i></div>
+                <div>
+                  <div class="text">Среда, 10:30–11:00, Zoom. Повестка: статус, риски, решение по релизу.</div>
+                  <div class="note">время + формат + 3 пункта</div>
+                </div>
+              </div>
+            </div>
+            <div class="pane bad">
+              <div class="pane-head">
+                <span class="chip"><i class="fa-solid fa-xmark" aria-hidden="true"></i> Не так</span>
+              </div>
+              <div class="row">
+                <div class="mark"><i class="fa-solid fa-triangle-exclamation"></i></div>
+                <div>
+                  <div class="text">Давайте созвонимся и обсудим текущие дела.</div>
+                  <div class="note">нет времени, нет структуры</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <article class="example-card fold-anim" aria-label="Запрос на материалы">
+          <div class="example-head">
+            <div class="example-title"><i class="fa-solid fa-folder-open" aria-hidden="true"></i> Запрос на материалы</div>
+          </div>
+          <div class="split">
+            <div class="pane good">
+              <div class="pane-head">
+                <span class="chip"><i class="fa-solid fa-check" aria-hidden="true"></i> Пиши так</span>
+              </div>
+              <div class="row">
+                <div class="mark"><i class="fa-solid fa-circle-check"></i></div>
+                <div>
+                  <div class="text">Нужны: логотип SVG, брендбук PDF, 3 скрина продукта (1920×1080) до 18:00.</div>
+                  <div class="note">чёткий список + дедлайн</div>
+                </div>
+              </div>
+            </div>
+            <div class="pane bad">
+              <div class="pane-head">
+                <span class="chip"><i class="fa-solid fa-xmark" aria-hidden="true"></i> Не так</span>
+              </div>
+              <div class="row">
+                <div class="mark"><i class="fa-solid fa-triangle-exclamation"></i></div>
+                <div>
+                  <div class="text">Пришлите, пожалуйста, все материалы по бренду побыстрее.</div>
+                  <div class="note">размыто, нет формата и срока</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <article class="example-card fold-anim" aria-label="Согласование задачи">
+          <div class="example-head">
+            <div class="example-title"><i class="fa-solid fa-clipboard-check" aria-hidden="true"></i> Согласование задачи</div>
+          </div>
+          <div class="split">
+            <div class="pane good">
+              <div class="pane-head">
+                <span class="chip"><i class="fa-solid fa-check" aria-hidden="true"></i> Пиши так</span>
+              </div>
+              <div class="row">
+                <div class="mark"><i class="fa-solid fa-list-ul"></i></div>
+                <div>
+                  <div class="text">Сделаю: 1) хедер, 2) карточки, 3) футер. Оценка — 5 часов. Начинаю после апрува.</div>
+                  <div class="note">перечень + оценка + условие старта</div>
+                </div>
+              </div>
+            </div>
+            <div class="pane bad">
+              <div class="pane-head">
+                <span class="chip"><i class="fa-solid fa-xmark" aria-hidden="true"></i> Не так</span>
+              </div>
+              <div class="row">
+                <div class="mark"><i class="fa-solid fa-triangle-exclamation"></i></div>
+                <div>
+                  <div class="text">Возьмусь за верстку страниц, как будет время.</div>
+                  <div class="note">нет объёма, нет оценки, нет условий</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <article class="example-card fold-anim" aria-label="Баг-репорт">
+          <div class="example-head">
+            <div class="example-title"><i class="fa-solid fa-bug" aria-hidden="true"></i> Баг-репорт</div>
+          </div>
+          <div class="split">
+            <div class="pane good">
+              <div class="pane-head">
+                <span class="chip"><i class="fa-solid fa-check" aria-hidden="true"></i> Пиши так</span>
+              </div>
+              <div class="row">
+                <div class="mark"><i class="fa-solid fa-magnifying-glass"></i></div>
+                <div>
+                  <div class="text">Safari 16, macOS. Кнопка «Оплатить» не активна после ввода номера. Логи в тикете #312. Исправим сегодня.</div>
+                  <div class="note">среда + шаги воспроизведения + срок</div>
+                </div>
+              </div>
+            </div>
+            <div class="pane bad">
+              <div class="pane-head">
+                <span class="chip"><i class="fa-solid fa-xmark" aria-hidden="true"></i> Не так</span>
+              </div>
+              <div class="row">
+                <div class="mark"><i class="fa-solid fa-triangle-exclamation"></i></div>
+                <div>
+                  <div class="text">Что-то не так с оплатой, иногда не работает.</div>
+                  <div class="note">нет контекста и конкретики</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <article class="example-card fold-anim" aria-label="Перенос срока">
+          <div class="example-head">
+            <div class="example-title"><i class="fa-solid fa-calendar-day" aria-hidden="true"></i> Перенос срока</div>
+          </div>
+          <div class="split">
+            <div class="pane good">
+              <div class="pane-head">
+                <span class="chip"><i class="fa-solid fa-check" aria-hidden="true"></i> Пиши так</span>
+              </div>
+              <div class="row">
+                <div class="mark"><i class="fa-solid fa-clock"></i></div>
+                <div>
+                  <div class="text">Бэклог: блок «Отзывы» + адаптив. Причина сдвига — зависимость от API. Новый срок: пт, 18:00. Я закрываю адаптив, API ждём от бэка.</div>
+                  <div class="note">причина + новый срок + план действий</div>
+                </div>
+              </div>
+            </div>
+            <div class="pane bad">
+              <div class="pane-head">
+                <span class="chip"><i class="fa-solid fa-xmark" aria-hidden="true"></i> Не так</span>
+              </div>
+              <div class="row">
+                <div class="mark"><i class="fa-solid fa-triangle-exclamation"></i></div>
+                <div>
+                  <div class="text">Не успеваю сегодня, сделаю как-нибудь позже.</div>
+                  <div class="note">нет причины, нет нового срока, нет плана</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <article class="example-card fold-anim" aria-label="Счёт и оплата">
+          <div class="example-head">
+            <div class="example-title"><i class="fa-solid fa-file-invoice-dollar" aria-hidden="true"></i> Счёт и оплата</div>
+          </div>
+          <div class="split">
+            <div class="pane good">
+              <div class="pane-head">
+                <span class="chip"><i class="fa-solid fa-check" aria-hidden="true"></i> Пиши так</span>
+              </div>
+              <div class="row">
+                <div class="mark"><i class="fa-solid fa-receipt"></i></div>
+                <div>
+                  <div class="text">Счёт №218 на 95 000 ₽ приложен (PDF). Реквизиты те же. Просьба оплатить до 25.10, чтобы начать этап «Дизайн» 28.10.</div>
+                  <div class="note">номер + сумма + срок + привязка к следующему шагу</div>
+                </div>
+              </div>
+            </div>
+            <div class="pane bad">
+              <div class="pane-head">
+                <span class="chip"><i class="fa-solid fa-xmark" aria-hidden="true"></i> Не так</span>
+              </div>
+              <div class="row">
+                <div class="mark"><i class="fa-solid fa-triangle-exclamation"></i></div>
+                <div>
+                  <div class="text">Я выслал счёт, оплатите, пожалуйста, как сможете.</div>
+                  <div class="note">нет суммы, номера, срока и контекста</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section id="principles" aria-labelledby="principlesTitle">
+      <div class="section-head">
+        <div class="section-title" id="principlesTitle">
+          <i class="fa-solid fa-sliders" aria-hidden="true"></i>
+          Принципы ясности
+        </div>
+        <div class="section-note">Элегантный минимум: смысл, порядок, действие.</div>
+      </div>
+
+      <div class="principles">
+        <article class="card fold-anim">
+          <div class="title"><i class="fa-solid fa-bullseye" aria-hidden="true"></i> Ясная цель</div>
+          <p>Начинай с «зачем». Если цель видна — легко убрать лишнее и выбрать верный тон.</p>
+        </article>
+        <article class="card fold-anim">
+          <div class="title"><i class="fa-solid fa-layer-group" aria-hidden="true"></i> Первое — главное</div>
+          <p>Ставь ключевое в начало: решение, срок, следующий шаг. Детали — ниже.</p>
+        </article>
+        <article class="card fold-anim">
+          <div class="title"><i class="fa-solid fa-hashtag" aria-hidden="true"></i> Числа и рамки</div>
+          <p>Время, объём, формат. Чем точнее границы, тем меньше переписок и недопонимания.</p>
+        </article>
+        <article class="card fold-anim">
+          <div class="title"><i class="fa-solid fa-list-check" aria-hidden="true"></i> Один экран — одно действие</div>
+          <p>Группируй задачи в короткие списки. Одно сообщение — один запрос.</p>
+        </article>
+        <article class="card fold-anim">
+          <div class="title"><i class="fa-solid fa-face-smile" aria-hidden="true"></i> Тон спокойный</div>
+          <p>Пиши прямо и доброжелательно. Уважай время: без пассивной агрессии и «воды».</p>
+        </article>
+        <article class="card fold-anim">
+          <div class="title"><i class="fa-solid fa-person-running" aria-hidden="true"></i> Движение к решению</div>
+          <p>Всегда завершай шагом: «что делаем, кто делает, к какому времени».</p>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <footer role="contentinfo">
+    <div class="footer-dock">
+      <a href="https://t.me/xarlonet" target="_blank" rel="noopener noreferrer" aria-label="Telegram @xarlonet">
+        <i class="fa-brands fa-telegram" aria-hidden="true"></i>
+      </a>
+      <div class="label">Связаться в Telegram</div>
+    </div>
+  </footer>
+
+  <script>
+    const root = document.documentElement;
+    const headerEl = document.querySelector('header');
+
+    // SETTINGS PANEL (toggling)
+    const settingsBtn = document.getElementById('settingsBtn');
+    const settingsPanel = document.getElementById('settingsPanel');
+    function openSettings(){
+      settingsPanel.setAttribute('aria-hidden','false');
+      settingsBtn.setAttribute('aria-expanded','true');
+    }
+    function closeSettings(){
+      settingsPanel.setAttribute('aria-hidden','true');
+      settingsBtn.setAttribute('aria-expanded','false');
+    }
+    function toggleSettings(){
+      const hidden = settingsPanel.getAttribute('aria-hidden') !== 'false';
+      hidden ? openSettings() : closeSettings();
+    }
+    settingsBtn.addEventListener('click', (e)=>{ e.stopPropagation(); toggleSettings(); }, { passive:false });
+    document.addEventListener('click', (e)=>{
+      if(settingsPanel.getAttribute('aria-hidden') === 'false'){
+        const within = settingsPanel.contains(e.target) || settingsBtn.contains(e.target);
+        if(!within) closeSettings();
+      }
+    }, { passive:true });
+    document.addEventListener('keydown', (e)=>{
+      if(e.key === 'Escape') closeSettings();
+    }, { passive:true });
+
+    // Keep --header-h in sync (supports dynamic toolbars)
+    function setHeaderVar(){
+      const h = headerEl ? headerEl.offsetHeight : 72;
+      root.style.setProperty('--header-h', h + 'px');
+    }
+    setHeaderVar();
+    window.addEventListener('resize', setHeaderVar, { passive:true });
+
+    // NAV ACTIVE TAB
+    const navLinks = Array.from(document.querySelectorAll('nav a[data-nav]'));
+    const sections = Array.from(navLinks).map(a => document.getElementById(a.getAttribute('href').slice(1))).filter(Boolean);
+    function setActive(id){
+      navLinks.forEach(a => a.classList.toggle('is-active', a.getAttribute('href') === '#' + id));
+    }
+    navLinks.forEach(a => a.addEventListener('click', () => setActive(a.getAttribute('href').slice(1)), { passive:true }));
+
+    let visibleRatios = new Map(sections.map(s => [s.id, 0]));
+    const sectionObserver = new IntersectionObserver((entries)=>{
+      let changed = false;
+      for(const e of entries){
+        if(e.isIntersecting || visibleRatios.get(e.target.id) !== 0){
+          visibleRatios.set(e.target.id, e.intersectionRatio);
+          changed = true;
+        }
+      }
+      if(changed){
+        let best = null; let bestRatio = -1;
+        visibleRatios.forEach((r, id) => { if(r > bestRatio){ bestRatio = r; best = id; } });
+        if(best) setActive(best);
+      }
+    }, { root: null, threshold: [0, .25, .5, .75, 1], rootMargin: `-${parseInt(getComputedStyle(root).getPropertyValue('--header-h')) + 8}px 0px 0px 0px` });
+    sections.forEach(s => sectionObserver.observe(s));
+
+    // Smooth scroll to top (brand click)
+    const brandHeader = document.getElementById('brandHeader');
+    function easeOutCirc(t){ return Math.sqrt(1 - Math.pow(t - 1, 2)); }
+    function smoothScrollToTop(duration = 500){
+      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        window.scrollTo(0,0); setActive(sections[0]?.id || 'write'); return;
+      }
+      const start = window.scrollY || window.pageYOffset;
+      const startTime = performance.now();
+      function frame(now){
+        const p = Math.min(1, (now - startTime) / duration);
+        const eased = easeOutCirc(p);
+        window.scrollTo(0, Math.round(start * (1 - eased)));
+        if(p < 1) requestAnimationFrame(frame); else setActive(sections[0]?.id || 'write');
+      }
+      requestAnimationFrame(frame);
+    }
+    brandHeader && brandHeader.addEventListener('click', (e)=>{ e.preventDefault(); smoothScrollToTop(500); }, { passive:false });
+
+    // Parallax on hero (disabled for reduced motion or hoverless devices to save power)
+    const hero = document.querySelector('.hero');
+    const motionOK = !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    function onScrollParallax(){
+      if(!motionOK || window.matchMedia('(hover:none)').matches){ hero.dataset.parallax = '0'; return; }
+      const r = hero.getBoundingClientRect();
+      const inView = r.top < window.innerHeight && r.bottom > 0;
+      hero.dataset.parallax = inView ? '1' : '0';
+    }
+    document.addEventListener('scroll', onScrollParallax, { passive:true });
+    window.addEventListener('resize', onScrollParallax, { passive:true });
+    onScrollParallax();
+
+    
+    // Live clock
+    const clockEl = document.getElementById('liveClock');
+
+    // Формат: пн, 29 сентября 2025 г., 14:33:07
+    const clockFormatter = new Intl.DateTimeFormat('ru-RU', {
+      weekday: 'short',
+      day: '2-digit',
+      month: 'long',
+      year: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit',
+      second: '2-digit'
+    });
+
+    function tickClock(){
+      const d = new Date();
+      const text = clockFormatter.format(d);
+      clockEl.textContent = text;
+      clockEl.setAttribute('title', text);
+    }
+
+    tickClock();
+    setInterval(tickClock, 1000);
+
+
+    // PRECIPITATION
+    const rainCanvas = document.getElementById('rainCanvas');
+    const snowCanvas = document.getElementById('snowCanvas');
+    let rainCtx, snowCtx;
+    let rainRAF = null, snowRAF = null;
+    let rainDrops = [], snowFlakes = [];
+
+    function resCanvas(c){
+      const dpr = Math.max(1, window.devicePixelRatio || 1);
+      const w = window.innerWidth;
+      const h = window.innerHeight;
+      c.width = Math.floor(w * dpr);
+      c.height = Math.floor(h * dpr);
+      c.style.width = w + 'px';
+      c.style.height = h + 'px';
+      const ctx = c.getContext('2d');
+      ctx.setTransform(1,0,0,1,0,0);
+      ctx.scale(dpr, dpr);
+      return { dpr, w, h, ctx };
+    }
+
+    // Density helper (adaptive to screen area and power)
+    function areaDensity(area, base){ return Math.round(area / base); }
+
+    // RAIN
+    function initRain(){
+      const { w, h, ctx } = resCanvas(rainCanvas);
+      rainCtx = ctx;
+      const area = w * h;
+      const base = (window.matchMedia('(hover:none)').matches || !motionOK) ? 26000 : 16000;
+      const density = areaDensity(area, base);
+      rainDrops = Array.from({length: density}, () => ({
+        x: Math.random() * w,
+        y: Math.random() * h,
+        len: 10 + Math.random() * 16,
+        vy: 420 + Math.random() * 440,
+        opacity: 0.28 + Math.random() * 0.4
+      }));
+    }
+    function stepRain(last){
+      const now = performance.now();
+      const dt = Math.min(40, now - last) / 1000;
+      const w = window.innerWidth, h = window.innerHeight;
+      rainCtx.clearRect(0,0,w,h);
+      rainCtx.strokeStyle = 'rgba(83,140,255,0.55)';
+      rainCtx.lineWidth = 1.2;
+      rainCtx.lineCap = 'round';
+      for(const d of rainDrops){
+        const dy = d.vy * dt;
+        d.y += dy;
+        d.x += dy * 0.05;
+        if(d.y > h + d.len){ d.y = -d.len; d.x = Math.random() * w; }
+        rainCtx.globalAlpha = d.opacity;
+        rainCtx.beginPath();
+        rainCtx.moveTo(d.x, d.y);
+        rainCtx.lineTo(d.x - d.len*0.2, d.y - d.len);
+        rainCtx.stroke();
+      }
+      rainRAF = requestAnimationFrame(()=>stepRain(now));
+    }
+    function startRain(){
+      if(rainRAF || !motionOK) return;
+      rainCanvas.classList.add('active');
+      initRain();
+      const start = performance.now();
+      rainRAF = requestAnimationFrame(()=>stepRain(start));
+    }
+    function stopRain(){
+      if(rainRAF){ cancelAnimationFrame(rainRAF); rainRAF = null; }
+      if(rainCtx){ rainCtx.clearRect(0,0,window.innerWidth,window.innerHeight); }
+      rainCanvas.classList.remove('active');
+    }
+
+    // SNOW
+    function initSnow(){
+      const { w, h, ctx } = resCanvas(snowCanvas);
+      snowCtx = ctx;
+      const area = w * h;
+      const base = (window.matchMedia('(hover:none)').matches || !motionOK) ? 52000 : 32000;
+      const density = areaDensity(area, base);
+      snowFlakes = Array.from({length: density}, () => ({
+        x: Math.random() * w,
+        y: Math.random() * h,
+        r: 1 + Math.random() * 2.2,
+        vy: 25 + Math.random() * 35,
+        vxBase: (Math.random() * 2 - 1) * 10,
+        phase: Math.random() * Math.PI * 2
+      }));
+    }
+    function stepSnow(last){
+      const now = performance.now();
+      const dt = Math.min(40, now - last) / 1000;
+      const w = window.innerWidth, h = window.innerHeight;
+      snowCtx.clearRect(0,0,w,h);
+      snowCtx.fillStyle = 'rgba(255,255,255,0.9)';
+      for(const f of snowFlakes){
+        f.phase += dt * 1.2;
+        f.y += f.vy * dt;
+        f.x += Math.sin(f.phase) * 12 * dt + f.vxBase * dt * 0.2;
+        if(f.y - f.r > h){ f.y = -f.r; f.x = Math.random() * w; f.phase = Math.random() * Math.PI * 2; }
+        if(f.x < -5) f.x = w + 5;
+        if(f.x > w + 5) f.x = -5;
+        snowCtx.beginPath();
+        snowCtx.arc(f.x, f.y, f.r, 0, Math.PI*2);
+        snowCtx.fill();
+      }
+      snowRAF = requestAnimationFrame(()=>stepSnow(now));
+    }
+    function startSnow(){
+      if(snowRAF || !motionOK) return;
+      snowCanvas.classList.add('active');
+      initSnow();
+      const start = performance.now();
+      snowRAF = requestAnimationFrame(()=>stepSnow(start));
+    }
+    function stopSnow(){
+      if(snowRAF){ cancelAnimationFrame(snowRAF); snowRAF = null; }
+      if(snowCtx){ snowCtx.clearRect(0,0,window.innerWidth,window.innerHeight); }
+      snowCanvas.classList.remove('active');
+    }
+
+    // Resize precipitation canvases correctly
+    window.addEventListener('resize', ()=>{
+      if(rainRAF){ initRain(); }
+      if(snowRAF){ initSnow(); }
+    }, { passive:true });
+
+    // Pause animations when tab hidden (battery/perf)
+    document.addEventListener('visibilitychange', () => {
+      if(document.hidden){
+        if(rainRAF){ cancelAnimationFrame(rainRAF); rainRAF = null; }
+        if(snowRAF){ cancelAnimationFrame(snowRAF); snowRAF = null; }
+      } else {
+        if(rainCanvas.classList.contains('active')) startRain();
+        if(snowCanvas.classList.contains('active')) startSnow();
+      }
+    });
+
+    // Switches (rain/snow)
+    const rainSwitch = document.getElementById('rainSwitch');
+    const snowSwitch = document.getElementById('snowSwitch');
+
+    function setSwitch(el, on){ el.setAttribute('aria-checked', String(on)); }
+
+    function toggleRain(save=true){
+      const on = rainSwitch.getAttribute('aria-checked') !== 'true';
+      setSwitch(rainSwitch, on);
+      on ? startRain() : stopRain();
+      if(save) try{ localStorage.setItem('rain', on ? '1' : '0'); }catch(_){}
+    }
+    function toggleSnow(save=true){
+      const on = snowSwitch.getAttribute('aria-checked') !== 'true';
+      setSwitch(snowSwitch, on);
+      on ? startSnow() : stopSnow();
+      if(save) try{ localStorage.setItem('snow', on ? '1' : '0'); }catch(_){}
+    }
+
+    rainSwitch.addEventListener('click', ()=>toggleRain(true), { passive:true });
+    snowSwitch.addEventListener('click', ()=>toggleSnow(true), { passive:true });
+
+    const keyToggle = (el, fn) => el.addEventListener('keydown', (e)=>{ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); fn(true); } }, { passive:false });
+    keyToggle(rainSwitch, toggleRain);
+    keyToggle(snowSwitch, toggleSnow);
+
+    // Restore only weather effects
+    (function restoreSettings(){
+      try{
+        const rainOn = localStorage.getItem('rain') === '1';
+        const snowOn = localStorage.getItem('snow') === '1';
+        setSwitch(rainSwitch, rainOn); if(rainOn) startRain();
+        setSwitch(snowSwitch, snowOn); if(snowOn) startSnow();
+      }catch(_){}
+    })();
+
+    /* ========= Fold animations: reveal once and keep visible ========= */
+    const foldEls = Array.from(document.querySelectorAll('.fold-anim'));
+    const foldMotionOK = !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    function setReveal(el, v){
+      el.style.setProperty('--reveal', v);
+      if(v === '1'){ el.style.opacity = '1'; }
+    }
+    const foldIO = new IntersectionObserver(entries=>{
+      for(const e of entries){
+        const el = e.target;
+        const already = el.dataset.revealed === '1';
+        if(e.isIntersecting){
+          if(foldMotionOK){ setReveal(el, '1'); }
+          else { el.style.opacity = '1'; el.style.transform = 'none'; el.style.clipPath = 'none'; }
+          el.dataset.revealed = '1';
+        } else if(!already && foldMotionOK){
+          setReveal(el, '0');
+        }
+      }
+    }, { threshold:[0.15] });
+    foldEls.forEach(el => { setReveal(el,'0'); foldIO.observe(el); });
+
+  </script>
+</body>
+</html>
